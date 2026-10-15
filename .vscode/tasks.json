@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Verify local launch prerequisites",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"node --version; npm --version; py -3.12 --version; Get-Command node,npm,py,psql -ErrorAction SilentlyContinue | Select-Object Name,Source; Get-Service -Name '*postgres*' -ErrorAction SilentlyContinue | Select-Object Name,Status; Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalPort -in 5432,8000,5173 } | Select-Object LocalAddress,LocalPort,OwningProcess; 'backend_env=' + (Test-Path backend\\.env); 'backend_venv=' + (Test-Path backend\\.venv\\Scripts\\python.exe); 'frontend_env=' + (Test-Path frontend\\.env); 'frontend_node_modules=' + (Test-Path frontend\\node_modules); Get-ChildItem frontend -Name *lock* -ErrorAction SilentlyContinue"
+			],
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
